@@ -13,8 +13,9 @@ export default function Reception() {
   const wrapperRef = useRef(null);
 
   useGSAP(() => {
-    // intro animation
-    const introTl = gsap.timeline();
+    const introTl = gsap.timeline({
+      onComplete: createScrollAnimation,
+    });
 
     introTl
       .fromTo(
@@ -30,27 +31,22 @@ export default function Reception() {
         0
       );
 
-    // scroll animation
-    gsap.timeline({
-      scrollTrigger: {
-        trigger: wrapperRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1,
-        markers: true,
-      },
-    })
-      .to("#office-flex", {
-        y: "100vh",
-      })
-      .to(
-        "#napoleon-painting",
-        {
-          y: "-100vh",
+    function createScrollAnimation() {
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: wrapperRef.current,
+          start: "top top",
+          end: "+=150%",
+          scrub: 1,
+          pin: true,
+          markers: true,
+          invalidateOnRefresh: true,
         },
-        0
-      );
-  }, []);
+      })
+        .to("#office-flex", { y: "+=100vh" }, 0)
+        .to("#napoleon-painting", { y: "-=100vh" }, 0);
+    }
+  }, { scope: wrapperRef });
 
   return (
     <main>
@@ -67,7 +63,6 @@ export default function Reception() {
           </div>
         </section>
       </div>
-      <div className="h-[200vh]"></div>
     </main>
   );
 }
