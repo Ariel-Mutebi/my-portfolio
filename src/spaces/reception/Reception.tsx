@@ -39,19 +39,24 @@ export default function Reception() {
           end: "+=150%",
           scrub: 1,
           pin: true,
-          markers: true,
+          markers: false,
           invalidateOnRefresh: true,
         },
       })
         .to("#office-flex", { y: "+=100vh" }, 0)
-        .to("#napoleon-painting", { y: "-=100vh" }, 0);
+        .to("#napoleon-painting", { y: "-=100vh" }, 0)
+        .to("#reception-grid", {
+          scale: 1.5,
+          transformOrigin: "center center",
+          ease: "none",
+        }, 0);
     }
   }, { scope: wrapperRef });
 
   return (
     <main>
       <div ref={wrapperRef} className="h-dvh flex items-center justify-center">
-        <section className="grid grid-cols-3 relative gap-4 m-8">
+        <section id="reception-grid" className="grid grid-cols-3 relative gap-4 m-8">
           <img src={officeFlex} id="office-flex" className="max-h-[80dvh]" alt="boy in office doing front double biceps" />
           <header className="absolute" id="reception-header">
             <h1>Ariel Robert Mutebi</h1>
