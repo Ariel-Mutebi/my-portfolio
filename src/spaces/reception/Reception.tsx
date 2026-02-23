@@ -13,39 +13,43 @@ export default function Reception() {
   const wrapperRef = useRef(null);
 
   useGSAP(() => {
-    gsap.fromTo(
-      "#office-flex",
-      { y: "-100vh", opacity: 0 },
-      { y: "-2rem", opacity: 1, duration: 1, ease: "power2.out" }
-    );
+    // intro animation
+    const introTl = gsap.timeline();
 
-    gsap.fromTo(
-      "#napoleon-painting",
-      { y: "100vh", opacity: 0 },
-      { y: "2rem", opacity: 1, duration: 1, ease: "power2.out" }
-    );
+    introTl
+      .fromTo(
+        "#office-flex",
+        { y: "-100vh", opacity: 0 },
+        { y: "-2rem", opacity: 1, duration: 1, ease: "power2.out" },
+        0
+      )
+      .fromTo(
+        "#napoleon-painting",
+        { y: "100vh", opacity: 0 },
+        { y: "2rem", opacity: 1, duration: 1, ease: "power2.out" },
+        0
+      );
 
-    gsap.to("#office-flex", {
-      y: "100vh",
+    // scroll animation
+    gsap.timeline({
       scrollTrigger: {
         trigger: wrapperRef.current,
         start: "top top",
         end: "bottom top",
         scrub: 1,
-        markers: false,
+        markers: true,
       },
-    });
-
-    gsap.to("#napoleon-painting", {
-      y: "-100vh",
-      scrollTrigger: {
-        trigger: wrapperRef.current,
-        start: "top top",
-        end: "bottom top",
-        scrub: 1,
-        markers: false,
-      },
-    });
+    })
+      .to("#office-flex", {
+        y: "100vh",
+      })
+      .to(
+        "#napoleon-painting",
+        {
+          y: "-100vh",
+        },
+        0
+      );
   }, []);
 
   return (
