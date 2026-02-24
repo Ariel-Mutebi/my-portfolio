@@ -5,10 +5,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import officeFlex from "./images/office-flex.jpg";
 import officeSelfie from "./images/office-selfie.jpg";
 import napoleonPainting from "./images/napoleon-in-his-study.jpeg";
+import { Frame } from "./Frame.tsx";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-export default function Reception() {
+export function Reception() {
   const wrapperRef = useRef(null);
 
   useGSAP(() => {
@@ -53,17 +54,26 @@ export default function Reception() {
   }, { scope: wrapperRef });
 
   return (
-    <div ref={wrapperRef} className="h-dvh flex items-center justify-center">
-      <section id="reception-grid" className="grid grid-cols-3 relative gap-4 m-8">
-        <img src={officeFlex} id="office-flex" className="max-h-[80dvh]" alt="boy in office doing front double biceps" />
-        <header className="absolute" id="reception-header">
-          <h1>Ariel Robert Mutebi</h1>
-          <h2>At AR Mutebi LLC</h2>
-        </header>
-        <img src={officeSelfie} id="office-selfie" className="max-h-[80dvh]" alt="selfie of a boy in a dressing shirt and vest" />
-        <div id="napoleon-painting" className="aspect-3/4 overflow-hidden max-h-[80dvh]">
-          <img src={napoleonPainting} alt="Oil painting: Emperor Napoleon in his study" />
+    <div ref={wrapperRef} className="h-dvh flex items-center justify-center bg-orange-50">
+      <section id="reception-grid" className="grid grid-cols-3 relative gap-8 m-8">
+        <Frame id="office-flex">
+          <img src={officeFlex} className="h-full" alt="boy in office doing front double biceps" />
+        </Frame>
+
+        <div className="absolute h-full w-full flex justify-center items-center z-10">
+          <header className="playfair-display text-center" id="reception-header">
+            <h1 className="text-7xl text-white text-shadow-sm">Ariel Robert Mutebi</h1>
+            <h2 className="text-4xl italic">At AR Mutebi LLC</h2>
+          </header>
         </div>
+
+        <Frame id="office-selfie">
+          <img src={officeSelfie} className="h-full" alt="selfie of a boy in a dressing shirt and vest" />
+        </Frame>
+
+        <Frame id="napoleon-painting">
+          <img src={napoleonPainting} alt="Oil painting: Emperor Napoleon in his study" />
+        </Frame>
       </section>
     </div>
   );
