@@ -6,6 +6,7 @@ import officeFlex from "./images/office-flex.jpg";
 import officeSelfie from "./images/office-selfie.jpg";
 import napoleonPainting from "./images/napoleon-in-his-study.jpeg";
 import { Frame } from "./Frame.tsx";
+import "./Reception.css";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -60,10 +61,10 @@ export function Reception() {
           <img src={officeFlex} className="h-full" alt="boy in office doing front double biceps" />
         </Frame>
 
-        <div className="absolute h-full w-full flex justify-center items-center z-10">
-          <header className="playfair-display text-center" id="reception-header">
-            <h1 className="text-7xl text-white text-shadow-sm">Ariel Robert Mutebi</h1>
-            <h2 className="text-4xl italic">At AR Mutebi LLC</h2>
+        <div className="absolute inset-0 flex justify-center items-center z-10">
+          <header className="text-center" id="reception-header">
+            <h1 className="montserrat text-8xl text-transparent font-black">Ariel Robert Mutebi</h1>
+            <h2 className="playfair-display text-4xl text-sky-950 italic">At AR Mutebi LLC</h2>
           </header>
         </div>
 
