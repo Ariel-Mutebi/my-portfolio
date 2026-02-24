@@ -5,7 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import officeFlex from "./images/office-flex.jpg";
 import officeSelfie from "./images/office-selfie.jpg";
 import napoleonPainting from "./images/napoleon-in-his-study.jpeg";
-import "./Reception.css";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -46,7 +45,7 @@ export default function Reception() {
         .to("#office-flex", { y: "+=100vh" }, 0)
         .to("#napoleon-painting", { y: "-=100vh" }, 0)
         .to("#reception-grid", {
-          scale: 1.5,
+          scale: 2,
           transformOrigin: "center center",
           ease: "none",
         }, 0);

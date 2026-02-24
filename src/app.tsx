@@ -1,4 +1,4 @@
-import Reception from "./spaces/reception/Reception.tsx";
+import Reception from "./components/Reception.tsx";
 
 export default function App() {
   return (
