@@ -64,7 +64,7 @@ export function Reception() {
         <div className="absolute inset-0 flex justify-center items-center z-10">
           <header className="text-center" id="reception-header">
             <h1 className="montserrat text-8xl text-transparent font-black">Ariel Robert Mutebi</h1>
-            <h2 className="playfair-display text-4xl text-sky-950 italic">At AR Mutebi LLC</h2>
+            <h2 className="playfair-display text-4xl italic">At AR Mutebi LLC</h2>
           </header>
         </div>
 
