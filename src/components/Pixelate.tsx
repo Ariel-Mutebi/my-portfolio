@@ -35,8 +35,8 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
       ctx.clearRect(0, 0, w, h);
 
       // ---- Pixelation ----
-      const scale = Math.max(1, Math.floor(40 * amount));
-
+      const pixelProgress = Math.pow(amount, 3);
+      const scale = 1 + Math.floor(pixelProgress * 120);
       ctx.imageSmoothingEnabled = false;
 
       // draw reduced
@@ -56,20 +56,19 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
       );
 
       // ---- Noise ----
-      const imageData = ctx.getImageData(0, 0, w, h);
-      const data = imageData.data;
+      const tileSize = 6 + amount * 24; // BIGGER blocks
+      const noiseChance = amount * 0.35;
 
-      const noiseStrength = amount * 0.25;
+      for (let y = 0; y < h; y += tileSize) {
+        for (let x = 0; x < w; x += tileSize) {
 
-      for (let i = 0; i < data.length; i += 4) {
-        if (Math.random() < noiseStrength) {
-          data[i] = 0;
-          data[i + 1] = 0;
-          data[i + 2] = 0;
+          if (Math.random() < noiseChance) {
+            ctx.fillStyle = "black";
+            ctx.fillRect(x, y, tileSize, tileSize);
+          }
+
         }
       }
-
-      ctx.putImageData(imageData, 0, 0);
     }
 
     /* ---------- RAF throttled draw ---------- */
