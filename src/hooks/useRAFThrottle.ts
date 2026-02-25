@@ -1,25 +1,18 @@
 // Use Request Animation Frame (Royal Air Force) throttling.
 import { useRef, useCallback, useEffect } from "react";
 
-export function useRAFThrottle<T>(
-  callback: (value: T) => void
-) {
+export function useRAFThrottle(callback: () => void) {
   const frame = useRef<number | null>(null);
-  const latestValue = useRef<T | null>(null);
   const callbackRef = useRef(callback);
 
   // keep latest callback without recreating function
   callbackRef.current = callback;
 
-  const schedule = useCallback((value: T) => {
-    latestValue.current = value;
-
+  const schedule = useCallback(() => {
     if (frame.current !== null) return;
 
     frame.current = requestAnimationFrame(() => {
-      if (latestValue.current !== null) {
-        callbackRef.current(latestValue.current);
-      }
+      callbackRef.current();
       frame.current = null;
     });
   }, []);

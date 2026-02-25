@@ -16,13 +16,36 @@ interface PixelateProps {
   className?: string;
 }
 
+function drawNoise(
+  ctx: CanvasRenderingContext2D,
+  w: number,
+  h: number,
+  intensity: number
+) {
+  const tileSize = 6 + intensity * 28;
+  const density = intensity * 0.35;
+
+  ctx.fillStyle = "black";
+
+  for (let y = 0; y < h; y += tileSize) {
+    for (let x = 0; x < w; x += tileSize) {
+      if (Math.random() < density) {
+        ctx.fillRect(x, y, tileSize, tileSize);
+      }
+    }
+  }
+}
+
 export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
-  ({ src, className }, ref) => {
+  ({ src, ariaLabel, className }, ref) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const ctxRef = useRef<CanvasRenderingContext2D | null>(null);
     const imgRef = useRef<HTMLImageElement | null>(null);
+    const intensityRef = useRef(0);
+    const noiseTimerRef = useRef<number | null>(null);
 
-    function draw(amount: number) {
+    function draw() {
+      const intensity = intensityRef.current;
       const canvas = canvasRef.current;
       const ctx = ctxRef.current;
       const img = imgRef.current;
@@ -34,9 +57,14 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
 
       ctx.clearRect(0, 0, w, h);
 
+      if (intensity < 0.05) {
+        ctx.drawImage(img, 0, 0, w, h);
+        return;
+      }
+
       // ---- Pixelation ----
-      const pixelProgress = Math.pow(amount, 3);
-      const scale = 1 + Math.floor(pixelProgress * 120);
+      const scale = 1 + Math.floor(Math.pow(intensity, 4) * 100);
+
       ctx.imageSmoothingEnabled = false;
 
       // draw reduced
@@ -56,33 +84,42 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
       );
 
       // ---- Noise ----
-      const tileSize = 6 + amount * 24; // BIGGER blocks
-      const noiseChance = amount * 0.35;
+      drawNoise(ctx, w, h, intensity);
+    }
 
-      for (let y = 0; y < h; y += tileSize) {
-        for (let x = 0; x < w; x += tileSize) {
+    useEffect(() => {
+      function startNoiseLoop() {
+        if (noiseTimerRef.current !== null) return;
 
-          if (Math.random() < noiseChance) {
-            ctx.fillStyle = "black";
-            ctx.fillRect(x, y, tileSize, tileSize);
+        noiseTimerRef.current = window.setInterval(() => {
+          if (intensityRef.current > 0.05) {
+            draw();
           }
+        }, 1000 / 12); // 12 FPS noise
+      }
 
+      function stopNoiseLoop() {
+        if (noiseTimerRef.current !== null) {
+          clearInterval(noiseTimerRef.current);
+          noiseTimerRef.current = null;
         }
       }
-    }
+
+      startNoiseLoop();
+
+      return stopNoiseLoop;
+    }, []);
 
     /* ---------- RAF throttled draw ---------- */
 
-    const throttledDraw = useRAFThrottle<number>((value) => {
-      draw(value);
-    });
+    const throttledDraw = useRAFThrottle(draw);
 
     /* ---------- Imperative API ---------- */
 
     useImperativeHandle(ref, () => ({
       setIntensity(value: number) {
-        const clamped = Math.max(0, Math.min(1, value));
-        throttledDraw(clamped);
+        intensityRef.current = Math.max(0, Math.min(1, value));
+        throttledDraw();
       },
     }));
 
@@ -103,7 +140,7 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
 
         ctxRef.current = canvas.getContext("2d");
 
-        draw(0);
+        draw();
       };
     }, [src]);
 
@@ -111,6 +148,7 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
       <canvas
         ref={canvasRef}
         className={className}
+        aria-label={ariaLabel}
         style={{
           imageRendering: "pixelated",
         }}
