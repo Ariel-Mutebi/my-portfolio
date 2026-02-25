@@ -8,11 +8,14 @@ import napoleonPainting from "./images/napoleon-in-his-study.jpeg";
 import { Frame } from "./Frame.tsx";
 import "./Reception.css";
 import { Pixelate, type PixelateHandle } from "./Pixelate.tsx";
-import type { SectionProps } from "../app.tsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export const Reception: FC<SectionProps> = ({ passTheBatonForward }) => {
+export interface ReceptionProps {
+  passTheBatonForward: () => void;
+}
+
+export const Reception: FC<ReceptionProps> = ({ passTheBatonForward }) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const pixelateRef = useRef<PixelateHandle>(null);
 
