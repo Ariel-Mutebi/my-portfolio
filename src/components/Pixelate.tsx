@@ -20,17 +20,16 @@ function drawNoise(
   ctx: CanvasRenderingContext2D,
   w: number,
   h: number,
+  scale: number,
   intensity: number
 ) {
-  const tileSize = 6 + intensity * 28;
   const density = intensity * 0.35;
-
   ctx.fillStyle = "black";
 
-  for (let y = 0; y < h; y += tileSize) {
-    for (let x = 0; x < w; x += tileSize) {
+  for (let y = 0; y < h; y += scale) {
+    for (let x = 0; x < w; x += scale) {
       if (Math.random() < density) {
-        ctx.fillRect(x, y, tileSize, tileSize);
+        ctx.fillRect(x, y, scale, scale);
       }
     }
   }
@@ -84,7 +83,7 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
       );
 
       // ---- Noise ----
-      drawNoise(ctx, w, h, intensity);
+      drawNoise(ctx, w, h, scale, intensity);
     }
 
     useEffect(() => {
