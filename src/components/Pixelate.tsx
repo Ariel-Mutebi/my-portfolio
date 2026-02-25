@@ -29,7 +29,7 @@ function drawNoise(
   const tileSize = scale * 4; // noise tile = pixel block size
   const density = intensity * 0.35;
 
-  ctx.fillStyle = "black";
+  ctx.fillStyle = "oklch(28.2% 0.091 267.935)"; // blue-950
 
   for (let y = 0; y < h; y += tileSize) {
     for (let x = 0; x < w; x += tileSize) {

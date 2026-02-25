@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, type FC } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,11 +8,12 @@ import napoleonPainting from "./images/napoleon-in-his-study.jpeg";
 import { Frame } from "./Frame.tsx";
 import "./Reception.css";
 import { Pixelate, type PixelateHandle } from "./Pixelate.tsx";
+import type { SectionProps } from "../app.tsx";
 
-gsap.registerPlugin(useGSAP, ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger);
 
-export function Reception() {
-  const wrapperRef = useRef(null);
+export const Reception: FC<SectionProps> = ({ passTheBatonForward }) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const pixelateRef = useRef<PixelateHandle>(null);
 
   useGSAP(() => {
@@ -40,17 +41,22 @@ export function Reception() {
           trigger: wrapperRef.current,
           start: "top top",
           end: "+=150%",
-          scrub: 1,
+          scrub: 0.2,
           pin: true,
           markers: false,
           invalidateOnRefresh: true,
         },
         onUpdate() {
-          pixelateRef.current?.setIntensity(tl.progress())
+          pixelateRef.current?.setIntensity(tl.progress());
+        },
+        onComplete() {
+          gsap.delayedCall(1, () => {
+            passTheBatonForward();
+          });
         }
       })
-        .to("#office-flex", { y: "+=100vh" }, 0)
-        .to("#napoleon-painting", { y: "-=100vh" }, 0)
+        .to("#office-flex", { y: "+=100dvh" }, 0)
+        .to("#napoleon-painting", { y: "-=100dvh" }, 0)
         .to("#reception-grid", {
           scale: 2,
           transformOrigin: "center center",
@@ -59,8 +65,25 @@ export function Reception() {
     }
   }, { scope: wrapperRef });
 
+  useGSAP(() => {
+    if (!wrapperRef.current) return;
+
+    const bgTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: wrapperRef.current,
+        start: "top top",
+        end: "+=150%",
+        scrub: 1,
+        markers: false,
+      },
+    });
+
+    bgTl.to(wrapperRef.current, { backgroundColor: "hsl(210 35% 98%)", ease: "none" })
+      .to(wrapperRef.current, { backgroundColor: "hsl(218,52%,94%)", ease: "none" });
+  }, { scope: wrapperRef });
+
   return (
-    <div ref={wrapperRef} className="h-dvh flex items-center justify-center bg-orange-50">
+    <div ref={wrapperRef} className="bg-orange-50 h-dvh flex items-center justify-center">
       <section id="reception-grid" className="grid grid-cols-3 relative gap-8 m-8">
         <Frame id="office-flex">
           <img src={officeFlex} className="h-full" alt="boy in office doing front double biceps" />
