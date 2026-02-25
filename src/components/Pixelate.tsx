@@ -16,6 +16,9 @@ interface PixelateProps {
   className?: string;
 }
 
+/**
+ * Draw noise aligned to pixel blocks
+ */
 function drawNoise(
   ctx: CanvasRenderingContext2D,
   w: number,
@@ -23,13 +26,15 @@ function drawNoise(
   scale: number,
   intensity: number
 ) {
+  const tileSize = scale * 4; // noise tile = pixel block size
   const density = intensity * 0.35;
+
   ctx.fillStyle = "black";
 
-  for (let y = 0; y < h; y += scale) {
-    for (let x = 0; x < w; x += scale) {
+  for (let y = 0; y < h; y += tileSize) {
+    for (let x = 0; x < w; x += tileSize) {
       if (Math.random() < density) {
-        ctx.fillRect(x, y, scale, scale);
+        ctx.fillRect(x, y, tileSize, tileSize);
       }
     }
   }
@@ -42,14 +47,18 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
     const imgRef = useRef<HTMLImageElement | null>(null);
     const intensityRef = useRef(0);
     const noiseTimerRef = useRef<number | null>(null);
+    const tempCanvasRef = useRef<HTMLCanvasElement | null>(null);
+    const tempCtxRef = useRef<CanvasRenderingContext2D | null>(null);
 
     function draw() {
       const intensity = intensityRef.current;
       const canvas = canvasRef.current;
       const ctx = ctxRef.current;
       const img = imgRef.current;
+      const temp = tempCanvasRef.current;
+      const tempCtx = tempCtxRef.current;
 
-      if (!canvas || !ctx || !img) return;
+      if (!canvas || !ctx || !img || !temp || !tempCtx) return;
 
       const w = canvas.width;
       const h = canvas.height;
@@ -61,40 +70,54 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
         return;
       }
 
-      // ---- Pixelation ----
-      const scale = 1 + Math.floor(Math.pow(intensity, 4) * 100);
+      // --- compute pixelation scale ---
+      const raw = 1 + Math.floor(Math.pow(intensity, 10) * 128);
+      const scale = Math.pow(2, Math.floor(Math.log2(raw)));
 
+      // --- pixelate in temp canvas ---
+      temp.width = Math.ceil(w / scale);
+      temp.height = Math.ceil(h / scale);
+      tempCtx.imageSmoothingEnabled = false;
+
+      tempCtx.clearRect(0, 0, temp.width, temp.height);
+      tempCtx.drawImage(
+        img,
+        0,
+        0,
+        img.width,
+        img.height,
+        0,
+        0,
+        temp.width,
+        temp.height
+      );
+
+      // --- draw pixelated temp canvas to display ---
       ctx.imageSmoothingEnabled = false;
-
-      // draw reduced
-      ctx.drawImage(img, 0, 0, w / scale, h / scale);
-
-      // scale back up
       ctx.drawImage(
-        canvas,
+        temp,
         0,
         0,
-        w / scale,
-        h / scale,
+        temp.width,
+        temp.height,
         0,
         0,
         w,
         h
       );
 
-      // ---- Noise ----
+      // --- add dynamic noise ---
       drawNoise(ctx, w, h, scale, intensity);
     }
 
+    // --- dynamic noise loop (12 FPS) ---
     useEffect(() => {
       function startNoiseLoop() {
         if (noiseTimerRef.current !== null) return;
 
         noiseTimerRef.current = window.setInterval(() => {
-          if (intensityRef.current > 0.05) {
-            draw();
-          }
-        }, 1000 / 12); // 12 FPS noise
+          if (intensityRef.current > 0.05) draw();
+        }, 1000 / 12);
       }
 
       function stopNoiseLoop() {
@@ -105,16 +128,13 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
       }
 
       startNoiseLoop();
-
       return stopNoiseLoop;
     }, []);
 
-    /* ---------- RAF throttled draw ---------- */
-
+    // --- throttled draw to avoid RAF overload ---
     const throttledDraw = useRAFThrottle(draw);
 
-    /* ---------- Imperative API ---------- */
-
+    // --- imperative API ---
     useImperativeHandle(ref, () => ({
       setIntensity(value: number) {
         intensityRef.current = Math.max(0, Math.min(1, value));
@@ -122,8 +142,7 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
       },
     }));
 
-    /* ---------- Image setup ---------- */
-
+    // --- image setup ---
     useEffect(() => {
       const img = new Image();
       img.src = src;
@@ -133,11 +152,18 @@ export const Pixelate = forwardRef<PixelateHandle, PixelateProps>(
 
         const canvas = canvasRef.current;
         if (!canvas) return;
-
         canvas.width = img.width;
         canvas.height = img.height;
 
         ctxRef.current = canvas.getContext("2d");
+
+        // temporary canvas for pixelation
+        const temp = document.createElement("canvas");
+        const tempCtx = temp.getContext("2d");
+        if (!tempCtx) return;
+
+        tempCanvasRef.current = temp;
+        tempCtxRef.current = tempCtx;
 
         draw();
       };
