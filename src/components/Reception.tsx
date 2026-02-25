@@ -7,11 +7,13 @@ import officeSelfie from "./images/office-selfie.jpg";
 import napoleonPainting from "./images/napoleon-in-his-study.jpeg";
 import { Frame } from "./Frame.tsx";
 import "./Reception.css";
+import { Pixelate, type PixelateHandle } from "./Pixelate.tsx";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 export function Reception() {
   const wrapperRef = useRef(null);
+  const pixelateRef = useRef<PixelateHandle>(null);
 
   useGSAP(() => {
     const introTl = gsap.timeline({
@@ -33,7 +35,7 @@ export function Reception() {
       );
 
     function createScrollAnimation() {
-      gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
           trigger: wrapperRef.current,
           start: "top top",
@@ -43,6 +45,9 @@ export function Reception() {
           markers: false,
           invalidateOnRefresh: true,
         },
+        onUpdate() {
+          pixelateRef.current?.setIntensity(tl.progress())
+        }
       })
         .to("#office-flex", { y: "+=100vh" }, 0)
         .to("#napoleon-painting", { y: "-=100vh" }, 0)
@@ -69,7 +74,12 @@ export function Reception() {
         </div>
 
         <Frame id="office-selfie">
-          <img src={officeSelfie} className="h-full" alt="selfie of a boy in a dressing shirt and vest" />
+          <Pixelate
+            ref={pixelateRef}
+            src={officeSelfie}
+            className="h-full"
+            ariaLabel="selfie of a boy in a dressing shirt and vest"
+          />
         </Frame>
 
         <Frame id="napoleon-painting">
