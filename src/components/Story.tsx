@@ -57,7 +57,10 @@ export function Story() {
 
       <div
         ref={focusRef}
-        className="sticky top-24 z-10 open-sans text-2xl text-slate-200 py-8"
+        className="
+          sticky top-26 z-10 open-sans text-2xl text-slate-200 py-8 rounded-2xl
+          bg-slate-900/10 backdrop-blur-sm border-2 border-white/10 shadow-2xl p-8
+          bg-linear-to-b from-white/10 to-white/0"
       >
         <p>{PARAGRAPHS[activeIndex]}</p>
       </div>
