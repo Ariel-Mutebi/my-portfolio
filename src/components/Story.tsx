@@ -1,4 +1,4 @@
-import { useRef, useState, createRef, type RefObject } from "react";
+import { useRef, useState, createRef, type RefObject, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -10,8 +10,11 @@ gsap.registerPlugin(ScrollTrigger);
 export function Story() {
   const containerRef = useRef<HTMLElement>(null);
   const focusRef = useRef<HTMLDivElement>(null);
+  const headerRef = useRef<HTMLHeadingElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const paragraphRefs = useRef(PARAGRAPHS.map(() => createRef<HTMLParagraphElement>())).current;
+  const paragraphRefs = useRef(
+    PARAGRAPHS.map(() => createRef<HTMLParagraphElement>())
+  ).current;
 
   useGSAP(
     () => {
@@ -20,10 +23,8 @@ export function Story() {
 
         ScrollTrigger.create({
           trigger: ref.current,
-
           start: "top center",
           end: "bottom center",
-
           onEnter: () => setActiveIndex(i),
           onEnterBack: () => setActiveIndex(i),
         });
@@ -45,13 +46,30 @@ export function Story() {
     { dependencies: [activeIndex] }
   );
 
+  const updateFocusOffset = () => {
+    if (!headerRef.current || !focusRef.current) return;
+    const headerHeight = headerRef.current.offsetHeight;
+    focusRef.current.style.top = `${headerHeight + 16}px`;
+  };
+
+  useEffect(() => {
+    updateFocusOffset();
+    window.addEventListener("resize", updateFocusOffset);
+    return () => window.removeEventListener("resize", updateFocusOffset);
+  }, []);
+
   return (
     <section
       id="story"
       ref={containerRef}
       className="min-h-dvh p-8 pb-[60vh]"
     >
-      <h1 className="roboto-mono font-semibold text-white text-6xl text-center sticky top-0 z-10">
+      <h1
+        ref={headerRef}
+        className="
+          roboto-mono font-semibold text-white text-6xl
+          text-center sticky top-0 z-10 py-4"
+      >
         Building better every day
       </h1>
 
