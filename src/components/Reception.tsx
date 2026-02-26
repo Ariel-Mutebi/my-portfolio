@@ -53,7 +53,7 @@ export const Reception: FC<ReceptionProps> = ({ passTheBatonForward }) => {
           pixelateRef.current?.setIntensity(tl.progress());
         },
         onComplete() {
-          gsap.delayedCall(1, () => {
+          gsap.delayedCall(0.5, () => {
             passTheBatonForward();
           });
         }

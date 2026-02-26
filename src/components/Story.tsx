@@ -1,6 +1,6 @@
 export function Story() {
   return (
-    <section id="story">
+    <section id="story" className="min-h-dvh">
       <h1>Building better every day</h1>
       <p>
         Hello, I'm Ariel. I'm a professional full-stack we developer. Having parents who work

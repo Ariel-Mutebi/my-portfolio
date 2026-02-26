@@ -1,7 +1,8 @@
-import { useState, type FC } from "react";
+import type { FC } from "react";
 import { Reception } from "./components/Reception.tsx";
 import { Story } from "./components/Story.tsx";
 import { useTopBoundaryIntent } from "./hooks/useTopBoundaryIntent.ts";
+import { useHashRoute } from "./hooks/useHashRoute.ts";
 
 interface MainProps {
   passTheBatonBackward: () => void;
@@ -18,12 +19,11 @@ const Main: FC<MainProps> = ({ passTheBatonBackward }) => {
 }
 
 export default function App() {
-  const [isReception, setIsReception] = useState(true);
+  const { hash, navigate } = useHashRoute("#reception");
+  const passTheBatonForward = () => navigate("#story");
+  const passTheBatonBackward = () => navigate("#reception");
 
-  const passTheBatonForward = () => setIsReception(false);
-  const passTheBatonBackward = () => setIsReception(true);
-
-  return isReception ?
+  return hash === "#reception" ?
     <Reception passTheBatonForward={passTheBatonForward} /> :
     <Main passTheBatonBackward={passTheBatonBackward} />;
 }
