@@ -68,7 +68,7 @@ export function Story() {
         ref={headerRef}
         className="
           roboto-mono font-semibold text-white text-6xl
-          text-center sticky top-0 z-10 py-4"
+          text-center sticky top-0 z-10 py-4 mx-20"
       >
         Building better every day
       </h1>
