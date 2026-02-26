@@ -62,7 +62,7 @@ export function Story() {
     <section
       id="story"
       ref={containerRef}
-      className="min-h-dvh p-8 pb-[60vh]"
+      className="min-h-dvh p-8 pb-[25vh]"
     >
       <h1
         ref={headerRef}
