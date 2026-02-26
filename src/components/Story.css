@@ -1,0 +1,47 @@
+:root {
+  /* Colors */
+  --blueprint-bg: var(--color-blue-950);
+  --grid-small-color: rgba(255, 255, 255, 0.1);
+  --grid-large-color: rgba(255, 255, 255, 0.3);
+
+  /* Grid sizing */
+  --grid-small-size: 40px;
+  --grid-large-size: 200px;
+
+  /* Line thickness */
+  --grid-small-width: 1px;
+  --grid-large-width: 2px;
+}
+
+#story {
+  background-color: var(--blueprint-bg);
+
+  background-image:
+    /* small vertical */
+    repeating-linear-gradient(to right,
+      var(--grid-small-color) 0,
+      var(--grid-small-color) var(--grid-small-width),
+      transparent var(--grid-small-width),
+      transparent var(--grid-small-size)),
+
+    /* small horizontal */
+    repeating-linear-gradient(to bottom,
+      var(--grid-small-color) 0,
+      var(--grid-small-color) var(--grid-small-width),
+      transparent var(--grid-small-width),
+      transparent var(--grid-small-size)),
+
+    /* large vertical */
+    repeating-linear-gradient(to right,
+      var(--grid-large-color) 0,
+      var(--grid-large-color) var(--grid-large-width),
+      transparent var(--grid-large-width),
+      transparent var(--grid-large-size)),
+
+    /* large horizontal */
+    repeating-linear-gradient(to bottom,
+      var(--grid-large-color) 0,
+      var(--grid-large-color) var(--grid-large-width),
+      transparent var(--grid-large-width),
+      transparent var(--grid-large-size));
+}

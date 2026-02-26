@@ -1,3 +1,5 @@
+import "./Story.css";
+
 export function Story() {
   return (
     <section id="story" className="min-h-dvh">
