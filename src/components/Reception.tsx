@@ -1,15 +1,12 @@
 import { useRef, type FC } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import officeFlex from "./images/office-flex.jpg";
 import officeSelfie from "./images/office-selfie.jpg";
 import napoleonPainting from "./images/napoleon-in-his-study.jpeg";
 import { Frame } from "./Frame.tsx";
 import "./Reception.css";
 import { Pixelate, type PixelateHandle } from "./Pixelate.tsx";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export interface ReceptionProps {
   passTheBatonForward: () => void;

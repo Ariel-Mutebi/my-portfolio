@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import { Reception } from "./components/Reception.tsx";
 import { Story } from "./components/Story.tsx";
-import { useTopBoundaryIntent } from "./hooks/useTopBoundaryIntent.ts";
 import { useHashRoute } from "./hooks/useHashRoute.ts";
 
 interface MainProps {
@@ -9,7 +8,7 @@ interface MainProps {
 }
 
 const Main: FC<MainProps> = ({ passTheBatonBackward }) => {
-  useTopBoundaryIntent(passTheBatonBackward);
+  // TODO: button to pass the baton backward (scroll up to go back gave terrible UX)
 
   return (
     <main>
