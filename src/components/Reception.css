@@ -7,24 +7,32 @@
   background-clip: text;
 }
 
-@keyframes diagonalGradient {
+@keyframes horizontalMetal {
   0% {
-    background-position: 0% 0%;
-  }
-
-  50% {
-    background-position: 100% 100%;
+    background-position: -150% 50%;
   }
 
   100% {
-    background-position: 0% 0%;
+    background-position: 150% 50%;
   }
 }
 
 #reception-header h2 {
-    background: linear-gradient(45deg, white, #353e61, white);
-    background-clip: text;
-      background-size: 1200% 1200%;
-      -webkit-text-fill-color: transparent;
-      animation: diagonalGradient 6s linear infinite;
+  background: linear-gradient(90deg,
+      /* horizontal gradient */
+      #3e4468 0%,
+      /* deep shadow */
+      #fefefc 50%,
+      /* bright metallic highlight */
+      #3e4468 100%
+      /* shadow again */
+    );
+
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+
+  background-size: 300% 100%;
+  /* wide horizontal space for smooth glide */
+  animation: horizontalMetal 15s linear infinite alternate;
 }
