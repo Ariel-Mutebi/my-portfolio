@@ -1,4 +1,5 @@
 import { CallOnScrollEnter } from "./components/CallOnScrollEnter.tsx";
+import { Ethos } from "./components/Ethos.tsx";
 import { Reception } from "./components/Reception.tsx";
 import { Story } from "./components/Story.tsx";
 import { useHashRoute } from "./hooks/useHashRoute.ts";
@@ -12,7 +13,7 @@ export default function App() {
     return <Reception passTheBatonForward={() => navigate(HASHES[1])} />;
   }
 
-  const mainSections = [<Story />];
+  const mainSections = [<Story />, <Ethos />];
 
   return (
     <main className="relative">
@@ -26,8 +27,8 @@ export default function App() {
       >
         &lt;
       </button>
-      {mainSections.slice(1).map((section, i) => (
-        <CallOnScrollEnter callback={() => navigate(HASHES[i])}>
+      {mainSections.map((section, i) => (
+        <CallOnScrollEnter callback={() => navigate(HASHES[i + 1])}>
           {section}
         </CallOnScrollEnter>
       ))}

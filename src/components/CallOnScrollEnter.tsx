@@ -17,6 +17,7 @@ export const CallOnScrollEnter: FC<CallOnScrollEnterProps> = ({
       scrollTrigger: {
         trigger: ref.current,
         onEnter: callback,
+        onEnterBack: callback,
       }
     });
   }, { scope: ref });
