@@ -28,7 +28,7 @@ export default function App() {
         &lt;
       </button>
       {mainSections.map((section, i) => (
-        <CallOnScrollEnter callback={() => navigate(HASHES[i + 1])}>
+        <CallOnScrollEnter callback={() => navigate(HASHES[i + 1])} key={HASHES[i + 1]}>
           {section}
         </CallOnScrollEnter>
       ))}
