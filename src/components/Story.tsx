@@ -1,4 +1,4 @@
-import { useRef, useState, createRef, type RefObject, useEffect } from "react";
+import { useRef, useState, createRef, type RefObject, useEffect, type FC } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -7,7 +7,11 @@ import "./Story.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function Story() {
+interface StoryProps {
+  passTheBatonBack: () => void;
+}
+
+export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
   const containerRef = useRef<HTMLElement>(null);
   const focusRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLHeadingElement>(null);
@@ -62,8 +66,19 @@ export function Story() {
     <section
       id="story"
       ref={containerRef}
-      className="min-h-dvh p-8 pb-[25vh]"
+      className="min-h-dvh p-8 pb-[25vh] relative"
     >
+      <button
+        type="button"
+        onClick={passTheBatonBack}
+        className="
+          absolute top-0.5 left-0.5 bg-blue-900 text-slate-400 w-20 h-20 text-4xl
+          cursor-pointer shadow-[inset_4px_4px_0px_rgba(0,0,0,0.25)] border border-slate-600
+        hover:text-slate-300 active:text-slate-200 active:shadow-none"
+      >
+        &lt;
+      </button>
+
       <h1
         ref={headerRef}
         className="
