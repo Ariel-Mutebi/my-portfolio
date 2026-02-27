@@ -1,0 +1,28 @@
+/* Soft cinematic shimmer */
+@keyframes ethos-shimmer {
+  0% {
+    background-position: -150% 50%;
+  }
+  100% {
+    background-position: 150% 50%;
+  }
+}
+
+.ethos-gradient {
+  background: linear-gradient(
+    45deg,
+    #3f3f46 0%,   /* zinc-700 (shadow) */
+    #a1a1aa 35%,  /* zinc-400 (light) */
+    #27272a 50%,  /* zinc-800 (depth) */
+    #a1a1aa 65%,  /* light sweep */
+    #3f3f46 100%
+  );
+
+  background-size: 300% 100%;
+  animation: ethos-shimmer 12s linear infinite;
+
+  /* gradient text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
