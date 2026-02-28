@@ -27,11 +27,23 @@ const DisplayedWord: FC<WordProps> = ({ firstWordRef, index }) => {
           {word}
         </p>
       );
-  /**
-   * Subsequent ones use <Flick />
-   */
+    
+    case 1:
+      return (
+        <Flick direction="up">
+          <p className="montserrat text-6xl font-bold text-sky-200">{word}</p>
+        </Flick>
+      );
+
+    case 2:
+      return (
+        <Flick direction="up">
+          <p className="montserrat text-6xl font-bold text-slate-200">{word}</p>
+        </Flick>
+      );
+
     default:
-      break;
+      return null;
   }
 };
 
@@ -49,10 +61,15 @@ const Background: FC<BackgroundProps> = ({ firstImageRef, index }) => {
           src={seatedPortrait}
           className="h-full w-full object-cover object-center"
           alt="Ariel seated" />
-      )
+      );
+
+    case 1:
+      return (
+        <div className="h-full w-full bg-sky-800"></div>
+      );
   
     default:
-      return <span />;
+      return null;
   }
 };
 
@@ -107,17 +124,16 @@ export function Article1() {
         </div>
       </article>
 
-      {/* Scroll triggers - invisible spacers that drive the index
       <div>
-        {WORDS.map((word, i) => (
+        {WORDS.slice(1).map((word, i) => (
           <div
             key={word}
-            ref={textRefs[i]}
+            ref={textRefs[i + 1]}
             className="h-[25dvh]"
             aria-hidden="true"
           />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 }

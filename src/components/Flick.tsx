@@ -3,7 +3,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 interface FlickProps {
-  onChangeOf: unknown;
+  onChangeOf?: unknown;
   children: ReactNode;
   direction?: "up" | "down" | "left" | "right";
   duration?: number;
@@ -23,6 +23,7 @@ export const Flick: FC<FlickProps> = ({
   duration = 0.35,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const hasChangeOf = onChangeOf !== undefined;
 
   useGSAP(
     () => {
@@ -40,7 +41,7 @@ export const Flick: FC<FlickProps> = ({
         }
       );
     },
-    { dependencies: [onChangeOf] }
+    { dependencies: hasChangeOf ? [onChangeOf] : [] }
   );
 
   return <div ref={ref}>{children}</div>;

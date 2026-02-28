@@ -30,6 +30,7 @@ export function useReader<T extends HTMLElement = HTMLParagraphElement>(
           end: "bottom center",
           onEnter: () => setCurrentIndex(i),
           onEnterBack: () => setCurrentIndex(i),
+          onLeaveBack: () => setCurrentIndex(i - 1),
         });
       });
     },
