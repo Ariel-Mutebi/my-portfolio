@@ -61,7 +61,6 @@ export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
       <div
         style={{
           top: headerHeight + 32,
-          visibility: currentIndex < 0 ? "hidden" : "visible",
         }}
         className="
           sticky z-10 open-sans text-2xl text-slate-200 py-8 rounded-2xl

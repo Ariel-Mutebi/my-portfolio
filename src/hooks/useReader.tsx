@@ -7,6 +7,7 @@ type TextRefType = HTMLParagraphElement | HTMLDivElement;
 interface UseReaderOptions {
   texts: string[];
   scopeRef: RefObject<HTMLElement | null>;
+  needsLeaveBack?: boolean
 }
 
 interface UseReaderReturn<T extends HTMLElement = TextRefType> {
@@ -15,7 +16,7 @@ interface UseReaderReturn<T extends HTMLElement = TextRefType> {
 }
 
 export function useReader<T extends HTMLElement = HTMLParagraphElement>(
-  { texts, scopeRef }: UseReaderOptions
+  { texts, scopeRef, needsLeaveBack = false }: UseReaderOptions
 ): UseReaderReturn<T> {
   const [currentIndex, setCurrentIndex] = useState(0);
   const textRefs = useRef(texts.map(() => createRef<T>())).current;
@@ -30,7 +31,9 @@ export function useReader<T extends HTMLElement = HTMLParagraphElement>(
           end: "bottom center",
           onEnter: () => setCurrentIndex(i),
           onEnterBack: () => setCurrentIndex(i),
-          onLeaveBack: () => setCurrentIndex(i - 1),
+          onLeaveBack: () => {
+            if (needsLeaveBack) setCurrentIndex(i - 1);
+          },
         });
       });
     },

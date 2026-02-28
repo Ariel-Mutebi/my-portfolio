@@ -3,11 +3,12 @@ import { useRef, type FC, type RefObject } from "react";
 import { useGSAP } from "@gsap/react";
 import { TextReveal } from "./TextReveal.tsx";
 import seatedPortrait from "./images/seated-portrait.jpg";
+import bossShoes from "./images/boss-shoes.jpg";
 import { useReader } from "../hooks/useReader.tsx";
 import "./Article1.css";
 import { Flick } from "./Flick.tsx";
 
-const WORDS = ["confidence", "competence", "and professionalism"];
+const WORDS = ["confidence", "competence", "professionalism"];
 
 interface WordProps {
   firstWordRef?: RefObject<HTMLParagraphElement | null>;
@@ -15,36 +16,21 @@ interface WordProps {
 }
 
 const DisplayedWord: FC<WordProps> = ({ firstWordRef, index }) => {
-  const word = WORDS[index];
-
-  switch (index) {
-    case 0:
-      return (
-        <p
-          ref={firstWordRef}
-          className="montserrat text-6xl font-bold mix-blend-difference text-white opacity-0"
-        >
-          {word}
-        </p>
-      );
-    
-    case 1:
-      return (
-        <Flick direction="up">
-          <p className="montserrat text-6xl font-bold text-sky-200">{word}</p>
-        </Flick>
-      );
-
-    case 2:
-      return (
-        <Flick direction="up">
-          <p className="montserrat text-6xl font-bold text-slate-200">{word}</p>
-        </Flick>
-      );
-
-    default:
-      return null;
-  }
+  return (
+    <>
+      <p
+        ref={firstWordRef}
+        className="montserrat text-6xl font-bold mix-blend-difference text-white"
+        style={{ display: index === 0 ? "block" : "none" }}
+      >
+        {WORDS[0]}
+      </p>
+      <Flick direction="up" onChangeOf={index}>
+        {index === 1 && <p className="montserrat text-6xl font-bold text-sky-200">{WORDS[1]}</p>}
+        {index === 2 && <p className="montserrat text-6xl font-bold text-emerald-200">{WORDS[2]}</p>}
+      </Flick>
+    </>
+  );
 };
 
 interface BackgroundProps {
@@ -53,24 +39,27 @@ interface BackgroundProps {
 }
 
 const Background: FC<BackgroundProps> = ({ firstImageRef, index }) => {
-  switch (index) {
-    case 0:
-      return (
-        <img
-          ref={firstImageRef}
-          src={seatedPortrait}
-          className="h-full w-full object-cover object-center"
-          alt="Ariel seated" />
-      );
-
-    case 1:
-      return (
-        <div className="h-full w-full bg-sky-800"></div>
-      );
-  
-    default:
-      return null;
-  }
+  return (
+    <>
+      <img
+        ref={firstImageRef}
+        src={seatedPortrait}
+        className="h-full w-full object-cover object-center absolute inset-0"
+        style={{ display: index === 0 ? "block" : "none" }}
+        alt="Ariel seated"
+      />
+      <div
+        className="h-full w-full bg-sky-800 absolute inset-0"
+        style={{ display: index === 1 ? "block" : "none" }}
+      />
+      <img
+        src={bossShoes}
+        className="h-full w-full object-cover object-center absolute inset-0"
+        style={{ display: index === 2 ? "block" : "none" }}
+        alt="Feet in socks and black leather derby shoes"
+      />
+    </>
+  );
 };
 
 export function Article1() {
@@ -78,7 +67,7 @@ export function Article1() {
   const {
     textRefs,
     currentIndex,
-  } = useReader<HTMLDivElement>({ texts: WORDS, scopeRef: wrapperRef });
+  } = useReader<HTMLDivElement>({ texts: WORDS, scopeRef: wrapperRef, needsLeaveBack: true });
 
   const firstWordRef = useRef<HTMLParagraphElement>(null);
   const firstImageRef = useRef<HTMLImageElement>(null);
@@ -115,7 +104,7 @@ export function Article1() {
           endColor="hsl(240.13 6% 34%)"
         />
 
-        <div className="grow min-h-0">
+        <div className="grow min-h-0 relative">
           <Background index={currentIndex} firstImageRef={firstImageRef} />
         </div>
 
