@@ -1,14 +1,13 @@
 import gsap from "gsap";
-import { useRef, type FC, type RefObject } from "react";
+import { useRef, useState, type FC, type RefObject } from "react";
 import { useGSAP } from "@gsap/react";
 import { TextReveal } from "./TextReveal.tsx";
 import seatedPortrait from "./images/seated-portrait.jpg";
 import bossShoes from "./images/boss-shoes.jpg";
-import { useReader } from "../hooks/useReader.tsx";
 import "./Article1.css";
 import { Flick } from "./Flick.tsx";
 
-const WORDS = ["confidence", "competence", "professionalism"];
+const WORDS = ["confidence", "competence", "and professionalism"];
 
 interface WordProps {
   firstWordRef?: RefObject<HTMLParagraphElement | null>;
@@ -25,7 +24,7 @@ const DisplayedWord: FC<WordProps> = ({ firstWordRef, index }) => {
       >
         {WORDS[0]}
       </p>
-      <Flick direction="up" onChangeOf={index}>
+      <Flick direction="up" onChangeOf={index} duration={0.5}>
         {index === 1 && <p className="montserrat text-6xl font-bold text-sky-200">{WORDS[1]}</p>}
         {index === 2 && <p className="montserrat text-6xl font-bold text-emerald-200">{WORDS[2]}</p>}
       </Flick>
@@ -64,11 +63,7 @@ const Background: FC<BackgroundProps> = ({ firstImageRef, index }) => {
 
 export function Article1() {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const {
-    textRefs,
-    currentIndex,
-  } = useReader<HTMLDivElement>({ texts: WORDS, scopeRef: wrapperRef, needsLeaveBack: true });
-
+  const [currentIndex, setCurrentIndex] = useState(0);
   const firstWordRef = useRef<HTMLParagraphElement>(null);
   const firstImageRef = useRef<HTMLImageElement>(null);
 
@@ -77,9 +72,15 @@ export function Article1() {
       scrollTrigger: {
         trigger: wrapperRef.current,
         start: "top top",
-        end: "+=600",
+        end: "+=3000",
         scrub: true,
         pin: true,
+        onUpdate: (self) => {
+          const p = self.progress;
+          if (p < 0.6) setCurrentIndex(0);
+          else if (p < 0.8) setCurrentIndex(1);
+          else setCurrentIndex(2);
+        },
       },
     }).fromTo(
       [firstImageRef.current, firstWordRef.current],
@@ -91,38 +92,22 @@ export function Article1() {
   return (
     <div ref={wrapperRef}>
       <article className="bg-lime-200 h-dvh relative flex flex-col">
-        <h2
-          className="playfair-display text-8xl text-zinc-800 pt-8 pr-24 text-right z-10 relative"
-        >
+        <h2 className="playfair-display text-8xl text-zinc-800 pt-8 pr-24 text-right z-10 relative">
           The Ariel <span className="italic ethos-gradient tracking-wide">Ethos</span>
         </h2>
-
         <TextReveal
           text="Creating lasting first impressions of"
           className="ml-[20dvw] my-8 text-4xl montserrat z-10 relative"
           startColor="hsl(80.7 90% 79%)"
           endColor="hsl(240.13 6% 34%)"
         />
-
         <div className="grow min-h-0 relative">
           <Background index={currentIndex} firstImageRef={firstImageRef} />
         </div>
-
         <div className="absolute inset-0 flex items-center justify-center">
           <DisplayedWord index={currentIndex} firstWordRef={firstWordRef} />
         </div>
       </article>
-
-      <div>
-        {WORDS.slice(1).map((word, i) => (
-          <div
-            key={word}
-            ref={textRefs[i + 1]}
-            className="h-[25dvh]"
-            aria-hidden="true"
-          />
-        ))}
-      </div>
     </div>
   );
 }
