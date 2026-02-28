@@ -6,6 +6,8 @@ import {
 } from "react";
 import { useRAFThrottle } from "../hooks/useRAFThrottle.ts";
 
+// TODO: start from minimum level of pixelation for better performance
+
 export interface PixelateHandle {
   setIntensity: (value: number) => void;
 }

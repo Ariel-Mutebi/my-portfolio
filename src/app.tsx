@@ -1,5 +1,5 @@
+import { Article1 } from "./components/Article1.tsx";
 import { CallOnScrollEnter } from "./components/CallOnScrollEnter.tsx";
-import { Ethos } from "./components/Ethos.tsx";
 import { Reception } from "./components/Reception.tsx";
 import { Story } from "./components/Story.tsx";
 import { useHashRoute } from "./hooks/useHashRoute.ts";
@@ -17,7 +17,9 @@ export default function App() {
         <Story passTheBatonBack={() => navigate("#reception")} />
       </CallOnScrollEnter>
       <CallOnScrollEnter callback={() => navigate("#ethos")}>
-        <Ethos />
+        <section id="ethos">
+          <Article1 />
+        </section>
       </CallOnScrollEnter>
     </main>
   );
