@@ -1,10 +1,10 @@
-import { useRef, useState, createRef, type RefObject, useEffect, type FC } from "react";
+import { useRef, useState, useEffect, type FC } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
 import { PARAGRAPHS } from "../constants/paragraphs.ts";
 import { Flick } from "./Flick.tsx";
 import "./Story.css";
+import { useReader } from "../hooks/useReader.tsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,13 +14,13 @@ interface StoryProps {
 
 export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
   const containerRef = useRef<HTMLElement>(null);
+  const {
+    currentIndex,
+    textRefs,
+  } = useReader({ texts: PARAGRAPHS, scopeRef: containerRef });
+  
   const headerRef = useRef<HTMLHeadingElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
-
-  const paragraphRefs = useRef(
-    PARAGRAPHS.map(() => createRef<HTMLParagraphElement>())
-  ).current;
 
   useEffect(() => {
     if (!headerRef.current) return;
@@ -31,21 +31,6 @@ export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
     return () => observer.disconnect();
   }, []);
 
-  useGSAP(
-    () => {
-      paragraphRefs.forEach((ref: RefObject<HTMLParagraphElement | null>, i: number) => {
-        if (!ref.current) return;
-        ScrollTrigger.create({
-          trigger: ref.current,
-          start: "top center",
-          end: "bottom center",
-          onEnter: () => setActiveIndex(i),
-          onEnterBack: () => setActiveIndex(i),
-        });
-      });
-    },
-    { scope: containerRef }
-  );
 
   return (
     <section
@@ -80,8 +65,8 @@ export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
           bg-slate-900/10 backdrop-blur-sm border-2 border-white/10 shadow-2xl p-8
           bg-linear-to-b from-white/10 to-white/0"
       >
-        <Flick onChangeOf={activeIndex} direction="up">
-          <p>{PARAGRAPHS[activeIndex]}</p>
+        <Flick onChangeOf={currentIndex} direction="up">
+          <p>{PARAGRAPHS[currentIndex]}</p>
         </Flick>
       </div>
 
@@ -89,8 +74,8 @@ export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
         {PARAGRAPHS.map((text: string, i: number) => (
           <p
             key={i}
-            ref={paragraphRefs[i]}
-            className={i <= activeIndex ? "opacity-0" : "opacity-100"}
+            ref={textRefs[i]}
+            className={i <= currentIndex ? "opacity-0" : "opacity-100"}
           >
             {text}
           </p>
