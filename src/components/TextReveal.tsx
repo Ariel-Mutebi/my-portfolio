@@ -6,8 +6,8 @@ type TextTag = "p" | "span" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 
 interface TextRevealProps {
   text: string;
-  startColor?: string;
-  endColor?: string;
+  startColor: string;
+  endColor: string;
   stagger?: number;
   start?: string;
   end?: string;
@@ -18,11 +18,11 @@ interface TextRevealProps {
 
 export const TextReveal: FC<TextRevealProps> = ({
   text,
-  startColor = "#ecfccb",
-  endColor = "#52525b",
+  startColor,
+  endColor,
   stagger = 0.04,
-  start = "top 75%",
-  end = "top 30%",
+  start = "top 65%",
+  end = "top 25%",
   scrub = 1,
   as: Tag = "p",
   className = "",

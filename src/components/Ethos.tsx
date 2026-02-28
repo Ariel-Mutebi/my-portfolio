@@ -11,8 +11,8 @@ export function Ethos() {
         <TextReveal
           text="Creating lasting first impressions of"
           className="ml-[20dvw] mt-8 text-4xl montserrat z-10"
-          startColor="#ecfccb"
-          endColor="#52525b"
+          startColor="hsl(80.7 90% 79%)" // lime-200
+          endColor="hsl(240.13 6% 34%)" // zinc-600
         />
         <div className="absolute inset-0 flex items-center justify-center">
           <p className="montserrat text-6xl mt-8 font-bold text-center">confidence</p>
