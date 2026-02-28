@@ -11,16 +11,24 @@ export const CallOnScrollEnter: FC<CallOnScrollEnterProps> = ({
   children,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const callbackRef = useRef(callback);
+  callbackRef.current = callback;
 
   useGSAP(() => {
+    let ready = false;
+    // Let the browser to scroll to the section in the URL hash first.
+    const timeout = setTimeout(() => { ready = true; }, 100);
+
     gsap.timeline({
       scrollTrigger: {
         trigger: ref.current,
-        onEnter: callback,
-        onEnterBack: callback,
+        onEnter: () => ready && callbackRef.current(),
+        onEnterBack: () => ready && callbackRef.current(),
       }
     });
-  }, { scope: ref });
+
+    return () => clearTimeout(timeout);
+  }, { scope: ref, dependencies: [] });
 
   return <div ref={ref}>{children}</div>
 }
