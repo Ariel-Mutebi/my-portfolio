@@ -1,13 +1,13 @@
 import gsap from "gsap";
-import { useRef, useState, type FC, type RefObject } from "react";
+import { useEffect, useRef, useState, type FC, type RefObject } from "react";
 import { useGSAP } from "@gsap/react";
 import { TextReveal } from "./TextReveal.tsx";
-import seatedPortrait from "./images/seated-portrait.jpg";
-import bossShoes from "./images/boss-shoes.jpg";
-import "./Article1.css";
 import { Flick } from "./Flick.tsx";
 
-const WORDS = ["confidence", "competence", "and professionalism"];
+import seatedPortrait from "./images/seated-portrait.jpg";
+import misty from "./images/misty.mp4";
+import bossShoes from "./images/boss-shoes.jpg";
+import "./Article1.css";
 
 interface WordProps {
   firstWordRef?: RefObject<HTMLParagraphElement | null>;
@@ -22,11 +22,15 @@ const DisplayedWord: FC<WordProps> = ({ firstWordRef, index }) => {
         className="montserrat text-6xl font-bold mix-blend-difference text-white"
         style={{ display: index === 0 ? "block" : "none" }}
       >
-        {WORDS[0]}
+        confidence
       </p>
       <Flick direction="up" onChangeOf={index} duration={0.5}>
-        {index === 1 && <p className="montserrat text-6xl font-bold text-sky-200">{WORDS[1]}</p>}
-        {index === 2 && <p className="montserrat text-6xl font-bold text-emerald-200">{WORDS[2]}</p>}
+        {index === 1 && (
+          <p className="montserrat text-6xl font-bold text-sky-200">competence</p>
+        )}
+        {index === 2 && (
+          <p className="montserrat text-6xl font-bold text-emerald-200">and professionalism</p>
+        )}
       </Flick>
     </>
   );
@@ -38,22 +42,43 @@ interface BackgroundProps {
 }
 
 const Background: FC<BackgroundProps> = ({ firstImageRef, index }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+    if (index === 1) {
+      videoRef.current.play();
+    } else {
+      videoRef.current.pause();
+      videoRef.current.currentTime = 0;
+    }
+  }, [index]);
+
   return (
     <>
       <img
         ref={firstImageRef}
         src={seatedPortrait}
-        className="h-full w-full object-cover object-center absolute inset-0"
+        className="h-full w-full object-cover absolute inset-0"
         style={{ display: index === 0 ? "block" : "none" }}
         alt="Ariel seated"
       />
-      <div
-        className="h-full w-full bg-sky-800 absolute inset-0"
-        style={{ display: index === 1 ? "block" : "none" }}
+      <video
+        ref={videoRef}
+        src={misty}
+        className="h-full w-full object-cover absolute inset-0"
+        style={{
+          display: index === 1 ? "block" : "none",
+          objectPosition: "50% 90%",
+        }}
+        muted
+        loop
+        playsInline
+        controls
       />
       <img
         src={bossShoes}
-        className="h-full w-full object-cover object-center absolute inset-0"
+        className="h-full w-full object-cover absolute inset-0"
         style={{ display: index === 2 ? "block" : "none" }}
         alt="Feet in socks and black leather derby shoes"
       />
@@ -77,34 +102,44 @@ export function Article1() {
         pin: true,
         onUpdate: (self) => {
           const p = self.progress;
-          if (p < 0.6) setCurrentIndex(0);
-          else if (p < 0.8) setCurrentIndex(1);
+          if (p < 0.5) setCurrentIndex(0);
+          else if (p < 0.75) setCurrentIndex(1);
           else setCurrentIndex(2);
         },
       },
     }).fromTo(
       [firstImageRef.current, firstWordRef.current],
       { opacity: 0, scale: 0.95 },
-      { opacity: 1, scale: 1, ease: "power2.out" }
+      { opacity: 1, scale: 1, ease: "power2.out", duration: 0.25 }
     );
   });
 
   return (
     <div ref={wrapperRef}>
       <article className="bg-lime-200 h-dvh relative flex flex-col">
-        <h2 className="playfair-display text-8xl text-zinc-800 pt-8 pr-24 text-right z-10 relative">
+        <h2 className="playfair-display text-8xl text-zinc-800 py-8 pr-24 text-right z-10 relative">
           The Ariel <span className="italic ethos-gradient tracking-wide">Ethos</span>
         </h2>
-        <TextReveal
-          text="Creating lasting first impressions of"
-          className="ml-[20dvw] my-8 text-4xl montserrat z-10 relative"
-          startColor="hsl(80.7 90% 79%)"
-          endColor="hsl(240.13 6% 34%)"
-        />
+
+        <div
+          className="transition-all duration-500 overflow-hidden"
+          style={{
+            opacity: currentIndex === 1 ? 0 : 1,
+            maxHeight: currentIndex === 1 ? "0" : "200px",
+          }}
+        >
+          <TextReveal
+            text="Creating lasting first impressions of"
+            className="ml-[20dvw] mb-8 text-4xl montserrat z-10 relative"
+            startColor="hsl(80.7 90% 79%)"
+            endColor="hsl(240.13 6% 34%)"
+          />
+        </div>
+
         <div className="grow min-h-0 relative">
           <Background index={currentIndex} firstImageRef={firstImageRef} />
         </div>
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <DisplayedWord index={currentIndex} firstWordRef={firstWordRef} />
         </div>
       </article>
