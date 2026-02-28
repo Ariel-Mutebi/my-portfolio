@@ -83,18 +83,11 @@ export const Reception: FC<ReceptionProps> = ({ passTheBatonForward }) => {
   }, { scope: wrapperRef });
 
   return (
-    <div ref={wrapperRef} className="bg-orange-50 h-dvh flex items-center justify-center">
-      <section id="reception-grid" className="grid grid-cols-3 relative gap-8 m-8">
+    <section ref={wrapperRef} className="bg-orange-50 h-dvh flex items-center justify-center relative">
+      <div id="reception-grid" className="grid grid-cols-3 relative gap-8 m-8">
         <Frame id="office-flex">
           <img src={officeFlex} className="h-full" alt="boy in office doing front double biceps" />
         </Frame>
-
-        <div className="absolute inset-0 flex justify-center items-center z-10">
-          <header className="text-center" id="reception-header">
-            <h1 className="montserrat text-8xl text-transparent font-black">Ariel Robert Mutebi</h1>
-            <h2 className="playfair-display text-4xl italic">At AR Mutebi LLC</h2>
-          </header>
-        </div>
 
         <Frame id="office-selfie">
           <Pixelate
@@ -108,7 +101,13 @@ export const Reception: FC<ReceptionProps> = ({ passTheBatonForward }) => {
         <Frame id="napoleon-painting">
           <img src={napoleonPainting} alt="Oil painting: Emperor Napoleon in his study" />
         </Frame>
-      </section>
-    </div>
+      </div>
+      <div className="absolute inset-0 flex justify-center items-center z-10">
+        <header className="text-center" id="reception-header">
+          <h1 className="montserrat text-8xl text-transparent font-black">Ariel Robert Mutebi</h1>
+          <h2 className="playfair-display text-4xl italic">At AR Mutebi LLC</h2>
+        </header>
+      </div>
+    </section>
   );
 }
