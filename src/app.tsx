@@ -1,4 +1,5 @@
 import { Article1 } from "./components/Article1.tsx";
+import { Article2 } from "./components/Article2.tsx";
 import { CallOnScrollEnter } from "./components/CallOnScrollEnter.tsx";
 import { Reception } from "./components/Reception.tsx";
 import { Story } from "./components/Story.tsx";
@@ -19,6 +20,7 @@ export default function App() {
       <CallOnScrollEnter callback={() => navigate("#ethos")}>
         <section id="ethos">
           <Article1 />
+          <Article2 />
         </section>
       </CallOnScrollEnter>
     </main>
