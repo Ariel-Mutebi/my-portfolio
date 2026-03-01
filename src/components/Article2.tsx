@@ -1,4 +1,4 @@
-import { memo, useRef } from "react";
+import { memo, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 
@@ -6,6 +6,7 @@ import lateNight from "./images/late-night.jpg";
 import earlyMorning from "./images/early-morning.jpg";
 import roseSelfie from "./images/rose-selfie.jpg";
 import { useDimensions } from "../hooks/useDimensions.ts";
+import { Flick } from "./Flick.tsx";
 
 const Header = memo(() => {
   const headerRef = useRef(null);
@@ -46,7 +47,35 @@ const Header = memo(() => {
 export function Article2() {
   const wrapperRef = useRef(null);
   const pictureRef = useRef(null);
+  const carouselRef = useRef(null);
   const { width: pictureWidth } = useDimensions(pictureRef);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useGSAP(() => {
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: wrapperRef.current,
+        start: "top top",
+        end: "+=1200",
+        scrub: true,
+        pin: true,
+        onUpdate(self) {
+          const { progress } = self;
+          if (progress < 0.3) setCurrentIndex(0);
+          else if (progress < 0.6) setCurrentIndex(1);
+          else setCurrentIndex(2);
+        }
+      }
+    });
+  }, { scope: wrapperRef });
+
+  useGSAP(() => {
+    gsap.to(carouselRef.current, {
+      x: -currentIndex * pictureWidth,
+      duration: 0.6,
+      ease: "power2.inOut",
+    })
+  }, { scope: wrapperRef, dependencies: [currentIndex, pictureWidth ] });
 
   return (
     <article
@@ -59,10 +88,24 @@ export function Article2() {
         ref={pictureRef}
         className="bg-orange-100 p-2 pb-8 ml-[20dvw] grow aspect-square min-h-0"
       >
-        <div className="w-full h-full flex overflow-hidden relative">
-          <img className="h-full w-full shrink-0 object-cover" src={lateNight} alt="Ariel standing shirtless in his gym at 1 a.m." />
-          <img className="h-full w-full shrink-0 object-cover" src={earlyMorning} alt="Laptop screen showing a time of 2:57 a.m." />
-          <img className="h-full w-full shrink-0 object-cover" src={roseSelfie} alt="Ariel bathed in red light with a rose in his mouth." />
+        <div className="w-full h-full overflow-hidden relative">
+          <div className="flex h-full w-full" ref={carouselRef}>
+            <img
+              src={lateNight}
+              className="h-full w-full shrink-0 object-cover"
+              alt="Ariel standing shirtless in his gym at 1 a.m."
+            />
+            <img
+              src={earlyMorning}
+              className="h-full w-full shrink-0 object-cover"
+              alt="Laptop screen showing a time of 2:57 a.m."
+            />
+            <img
+              src={roseSelfie}
+              className="h-full w-full shrink-0 object-cover"
+              alt="Ariel bathed in red light with a rose in his mouth."
+            />
+          </div>
 
           {/* Hidden SVG defining the filter */}
           <svg style={{ position: "absolute", width: 0, height: 0 }}>
@@ -88,12 +131,16 @@ export function Article2() {
       </div>
 
       <div className="absolute inset-0 flex items-center">
-        <p
-          className="text-slate-400 font-black text-6xl"
-          style={{ marginLeft: `calc(20dvw + ${pictureWidth}px - 1.5rem)` }}
-        >
-          of consistency
-        </p>
+        <Flick onChangeOf={currentIndex} direction="left" duration={0.6}>
+          <div
+            className="montserrat font-black text-6xl"
+            style={{ marginLeft: `calc(20dvw + ${pictureWidth}px - 2rem)` }}
+          >
+            {currentIndex === 0 && <p className="text-slate-400">of consistency</p>}
+            {currentIndex === 1 && <p className="text-blue-400">of focus</p>}
+            {currentIndex === 2 && <p className="text-rose-400">and passion</p>}
+          </div>
+        </Flick>
       </div>
     </article>
   );

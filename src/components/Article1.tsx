@@ -16,23 +16,23 @@ interface WordProps {
 
 const DisplayedWord: FC<WordProps> = ({ firstWordRef, index }) => {
   return (
-    <>
+    <div className="montserrat text-6xl font-bold">
       <p
         ref={firstWordRef}
-        className="montserrat text-6xl font-bold mix-blend-difference text-white"
+        className="font-bold mix-blend-difference text-white"
         style={{ display: index === 0 ? "block" : "none" }}
       >
         confidence
       </p>
       <Flick direction="up" onChangeOf={index} duration={0.5}>
         {index === 1 && (
-          <p className="montserrat text-6xl font-bold text-sky-200">competence</p>
+          <p className="text-sky-200">competence</p>
         )}
         {index === 2 && (
-          <p className="montserrat text-6xl font-bold text-emerald-200">and professionalism</p>
+          <p className="text-emerald-200">and professionalism</p>
         )}
       </Flick>
-    </>
+    </div>
   );
 };
 
@@ -100,10 +100,10 @@ export function Article1() {
         end: "+=3000",
         scrub: true,
         pin: true,
-        onUpdate: (self) => {
-          const p = self.progress;
-          if (p < 0.5) setCurrentIndex(0);
-          else if (p < 0.75) setCurrentIndex(1);
+        onUpdate(self) {
+          const { progress } = self;
+          if (progress < 0.5) setCurrentIndex(0);
+          else if (progress < 0.75) setCurrentIndex(1);
           else setCurrentIndex(2);
         },
       },
