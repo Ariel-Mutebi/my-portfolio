@@ -1,6 +1,7 @@
 import { Article1 } from "./components/Article1.tsx";
 import { Article2 } from "./components/Article2.tsx";
 import { Article3 } from "./components/Article3.tsx";
+import { Article4 } from "./components/Article4.tsx";
 import { CallOnScrollEnter } from "./components/CallOnScrollEnter.tsx";
 import { Reception } from "./components/Reception.tsx";
 import { Story } from "./components/Story.tsx";
@@ -23,6 +24,7 @@ export default function App() {
           <Article1 />
           <Article2 />
           <Article3 />
+          <Article4 />
         </section>
       </CallOnScrollEnter>
     </main>
