@@ -1,10 +1,11 @@
-import { useRef, useState, useEffect, type FC } from "react";
+import { useRef, type FC } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PARAGRAPHS } from "../constants/paragraphs.ts";
 import { Flick } from "./Flick.tsx";
 import "./Story.css";
 import { useReader } from "../hooks/useReader.tsx";
+import { useDimensions } from "../hooks/useDimensions.ts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,19 +19,9 @@ export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
     currentIndex,
     textRefs,
   } = useReader({ texts: PARAGRAPHS, scopeRef: containerRef });
-  
+
   const headerRef = useRef<HTMLHeadingElement>(null);
-  const [headerHeight, setHeaderHeight] = useState(0);
-
-  useEffect(() => {
-    if (!headerRef.current) return;
-    const observer = new ResizeObserver(([entry]) => {
-      setHeaderHeight(entry.contentRect.height);
-    });
-    observer.observe(headerRef.current);
-    return () => observer.disconnect();
-  }, []);
-
+  const { height: headerHeight } = useDimensions(headerRef);
 
   return (
     <section
