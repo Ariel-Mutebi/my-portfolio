@@ -61,7 +61,7 @@ const Background: FC<BackgroundProps> = ({ firstImageRef, index }) => {
         src={seatedPortrait}
         className="h-full w-full object-cover absolute inset-0"
         style={{ display: index === 0 ? "block" : "none" }}
-        alt="Ariel seated"
+        alt="Me seated"
       />
       <video
         ref={videoRef}

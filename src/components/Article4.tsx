@@ -1,4 +1,4 @@
-import blueMarbleTexture from "./images/blueMarbleTexture.jpg";
+import blueMarbleTexture from "./images/blue-marble-texture.jpg";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import { Group, Mesh, TextureLoader } from "three";

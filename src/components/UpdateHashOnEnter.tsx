@@ -18,7 +18,7 @@ export const UpdateHashOnEnter: FC<UpdateHashOnEnterProps> = ({
   useGSAP(() => {
     let ready = false;
     // Let the browser to scroll to the section in the URL hash first.
-    const timeout = setTimeout(() => { ready = true; }, 100);
+    const timeout = setTimeout(() => { ready = true; }, 250);
 
     gsap.timeline({
       scrollTrigger: {

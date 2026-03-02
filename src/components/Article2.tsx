@@ -93,7 +93,7 @@ export function Article2() {
             <img
               src={lateNight}
               className="h-full w-full shrink-0 object-cover"
-              alt="Ariel standing shirtless in his gym at 1 a.m."
+              alt="Me standing shirtless in my gym at 1 a.m."
             />
             <img
               src={earlyMorning}
@@ -103,7 +103,7 @@ export function Article2() {
             <img
               src={roseSelfie}
               className="h-full w-full shrink-0 object-cover"
-              alt="Ariel bathed in red light with a rose in his mouth."
+              alt="Me bathed in red light with a rose in my mouth."
             />
           </div>
 
