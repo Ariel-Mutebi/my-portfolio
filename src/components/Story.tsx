@@ -25,7 +25,6 @@ export const Story: FC<StoryProps> = ({ passTheBatonBack }) => {
 
   return (
     <section
-      id="story"
       ref={containerRef}
       className="min-h-dvh p-8 pb-[25vh] relative"
     >

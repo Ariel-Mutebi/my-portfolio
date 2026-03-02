@@ -1,8 +1,9 @@
+import type { ReactElement } from "react";
 import { Article1 } from "./components/Article1.tsx";
 import { Article2 } from "./components/Article2.tsx";
 import { Article3 } from "./components/Article3.tsx";
 import { Article4 } from "./components/Article4.tsx";
-import { CallOnScrollEnter } from "./components/CallOnScrollEnter.tsx";
+import { UpdateHashOnEnter } from "./components/UpdateHashOnEnter.tsx";
 import { Reception } from "./components/Reception.tsx";
 import { Story } from "./components/Story.tsx";
 import { useHashRoute } from "./hooks/useHashRoute.ts";
@@ -14,19 +15,23 @@ export default function App() {
     return <Reception passTheBatonForward={() => navigate("#story")} />;
   }
 
+  const theRest: [string, ReactElement][] = [
+    ["ethos-impressions", <Article1 />],
+    ["ethos-work", <Article2 />],
+    ["ethos-records", <Article3 />],
+    ["ethos-world", <Article4 />]
+  ];
+
   return (
     <main className="relative">
-      <CallOnScrollEnter callback={() => navigate("#story")}>
+      <UpdateHashOnEnter hash="story" navigate={navigate}>
         <Story passTheBatonBack={() => navigate("#reception")} />
-      </CallOnScrollEnter>
-      <CallOnScrollEnter callback={() => navigate("#ethos")}>
-        <section id="ethos">
-          <Article1 />
-          <Article2 />
-          <Article3 />
-          <Article4 />
-        </section>
-      </CallOnScrollEnter>
+      </UpdateHashOnEnter>
+      {theRest.map(([hash, article]) => (
+        <UpdateHashOnEnter hash={hash} navigate={navigate}>
+          {article}
+        </UpdateHashOnEnter>
+      ))}
     </main>
   );
 }

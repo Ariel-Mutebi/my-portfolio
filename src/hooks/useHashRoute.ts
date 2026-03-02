@@ -24,7 +24,7 @@ export function useHashRoute(defaultHash = "#reception") {
 
   const navigate = (nextHash: string) => {
     if (nextHash === hash) return;
-    history.pushState(null, "", nextHash);
+    history.pushState(null, "", `#${nextHash}`);
     syncHash();
   };
 

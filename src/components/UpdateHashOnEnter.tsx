@@ -2,17 +2,18 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { type PropsWithChildren, type FC, useRef } from "react";
 
-interface CallOnScrollEnterProps extends PropsWithChildren {
-  callback: () => void;
+interface UpdateHashOnEnterProps extends PropsWithChildren {
+  hash: string;
+  navigate: (hash: string) => void;
 }
 
-export const CallOnScrollEnter: FC<CallOnScrollEnterProps> = ({
-  callback,
+export const UpdateHashOnEnter: FC<UpdateHashOnEnterProps> = ({
+  hash,
+  navigate,
   children,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const callbackRef = useRef(callback);
-  callbackRef.current = callback;
+  const handleEnter = () => navigate(hash);
 
   useGSAP(() => {
     let ready = false;
@@ -22,13 +23,18 @@ export const CallOnScrollEnter: FC<CallOnScrollEnterProps> = ({
     gsap.timeline({
       scrollTrigger: {
         trigger: ref.current,
-        onEnter: () => ready && callbackRef.current(),
-        onEnterBack: () => ready && callbackRef.current(),
+        start: "top top",
+        onEnter() {
+          if (ready) handleEnter();
+        },
+        onEnterBack() {
+          if (ready) handleEnter();
+        }
       }
     });
 
     return () => clearTimeout(timeout);
   }, { scope: ref, dependencies: [] });
 
-  return <div ref={ref}>{children}</div>
+  return <div id={hash} ref={ref}>{children}</div>
 }
