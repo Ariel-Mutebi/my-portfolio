@@ -7,6 +7,7 @@ import earlyMorning from "./images/early-morning.jpg";
 import roseSelfie from "./images/rose-selfie.jpg";
 import { useDimensions } from "../hooks/useDimensions.ts";
 import { Flick } from "./Flick.tsx";
+import { InvisibleNoiseSVG } from "./InvisibleNoiseSVG.tsx";
 
 const Header = memo(() => {
   const headerRef = useRef(null);
@@ -107,22 +108,12 @@ export function Article2() {
             />
           </div>
 
-          {/* Hidden SVG defining the filter */}
-          <svg style={{ position: "absolute", width: 0, height: 0 }}>
-            <defs>
-              <filter id="noise">
-                <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" stitchTiles="stitch" result="noise" />
-                <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise" />
-                <feBlend in="SourceGraphic" in2="grayNoise" mode="overlay" />
-              </filter>
-            </defs>
-          </svg>
+          <InvisibleNoiseSVG baseFrequency={0.6} />
 
-          {/* Overlay div referencing the filter */}
           <div
             className="absolute inset-0 pointer-events-none z-10"
             style={{
-              filter: "url(#noise)",
+              filter: "url(#noise0.6)",
               opacity: 0.4,
               maskImage: "radial-gradient(ellipse at center, transparent 40%, black 100%)"
             }}

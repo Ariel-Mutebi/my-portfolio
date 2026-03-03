@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useImageAnchors } from "../hooks/useImageAnchors.ts";
 import myFriendAndMe from "./images/my-friend-and-me.jpg";
+import { InvisibleNoiseSVG } from "./InvisibleNoiseSVG.tsx";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -66,7 +67,11 @@ export function Article5() {
         <span ref={oRef} className="inline-block origin-center">o</span>
         <span ref={llaborateRef} className="inline-block">llaborate</span>
       </p>
-      <footer className="absolute top-[80%] h-[20%]"></footer>
+
+      <InvisibleNoiseSVG baseFrequency={0.8} />
+      <footer className="absolute top-[80%] h-[20%] w-full overflow-hidden">
+        <div className="absolute inset-0 bg-neutral-900/75" style={{ filter: "url(#noise0.8)" }} />
+      </footer>
     </article>
   );
 }
