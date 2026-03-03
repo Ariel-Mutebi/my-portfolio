@@ -5,7 +5,7 @@ import { TextReveal } from "./TextReveal.tsx";
 import { Flick } from "./Flick.tsx";
 
 import seatedPortrait from "./images/seated-portrait.jpg";
-import misty from "./images/misty-compressed.mp4";
+import misty from "/videos/misty.mp4";
 import bossShoes from "./images/boss-shoes.jpg";
 import "./Article1.css";
 
