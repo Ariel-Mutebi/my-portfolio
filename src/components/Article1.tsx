@@ -5,9 +5,11 @@ import { TextReveal } from "./TextReveal.tsx";
 import { Flick } from "./Flick.tsx";
 
 import seatedPortrait from "./images/seated-portrait.jpg";
-import misty from "/videos/misty.mp4";
 import bossShoes from "./images/boss-shoes.jpg";
 import "./Article1.css";
+
+// for dev:
+// import misty from "/videos/misty.mp4";
 
 interface WordProps {
   firstWordRef?: RefObject<HTMLParagraphElement | null>;
@@ -65,7 +67,8 @@ const Background: FC<BackgroundProps> = ({ firstImageRef, index }) => {
       />
       <video
         ref={videoRef}
-        src={misty}
+        // src={misty}
+        src="https://videos.armutebi.com/misty.mp4"
         className="h-full w-full object-cover absolute inset-0"
         style={{
           display: index === 1 ? "block" : "none",

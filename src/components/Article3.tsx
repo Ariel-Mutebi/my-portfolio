@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect, type FC } from "react";
-import deadlift1 from "/videos/deadlift1.mp4";
-import deadlift2 from "/videos/deadlift2.mp4";
-import deadlift3 from "/videos/deadlift3.mp4";
-import deadlift4 from "/videos/deadlift4.mp4";
+// for dev
+// import deadlift1 from "/videos/deadlift1.mp4";
+// import deadlift2 from "/videos/deadlift2.mp4";
+// import deadlift3 from "/videos/deadlift3.mp4";
+// import deadlift4 from "/videos/deadlift4.mp4";
 
 interface DeadliftRecord {
   record: string;
@@ -14,22 +15,26 @@ const DEADLIFT_RECORDS: DeadliftRecord[] = [
   {
     record: "90kg for 1 rep (four sets)",
     dateString: "4 Aug, 2025",
-    videoSrc: deadlift1,
+    // videoSrc: deadlift1,
+    videoSrc: "https://videos.armutebi.com/deadlift1.mp4"
   },
   {
     record: "100kg for 1 rep (two sets)",
     dateString: "14 Sept, 2025",
-    videoSrc: deadlift2,
+    // videoSrc: deadlift2,
+    videoSrc: "https://videos.armutebi.com/deadlift2.mp4"
   },
   {
     record: "100kg for 3 reps",
     dateString: "15 Dec, 2025",
-    videoSrc: deadlift3,
+    // videoSrc: deadlift3,
+    videoSrc: "https://videos.armutebi.com/deadlift3.mp4"
   },
   {
     record: "100kg for 4 reps",
     dateString: "16 Feb, 2026",
-    videoSrc: deadlift4,
+    // videoSrc: deadlift4,
+    videoSrc: "https://videos.armutebi.com/deadlift4.mp4"
   }
 ];
 
@@ -84,9 +89,7 @@ export function Article3() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const handleEnded = (index: number) => {
-    if (index < DEADLIFT_RECORDS.length - 1) {
-      setActiveIndex(index + 1);
-    }
+    setActiveIndex((index + 1) % DEADLIFT_RECORDS.length);
   };
 
   return (
