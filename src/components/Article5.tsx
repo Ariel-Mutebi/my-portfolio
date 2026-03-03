@@ -5,6 +5,9 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useImageAnchors } from "../hooks/useImageAnchors.ts";
 import myFriendAndMe from "./images/my-friend-and-me.jpg";
 import { InvisibleNoiseSVG } from "./InvisibleNoiseSVG.tsx";
+import { SocialLink } from "./SocialLink.tsx";
+import githubLogo from "./images/github.png";
+import gmailLogo from "./images/gmail.png";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,8 +72,13 @@ export function Article5() {
       </p>
 
       <InvisibleNoiseSVG baseFrequency={0.8} />
-      <footer className="absolute top-[80%] h-[20%] w-full overflow-hidden">
+      <footer className="absolute top-[80%] h-[20%] w-full overflow-hidden flex flex-col justify-center gap-4">
         <div className="absolute inset-0 bg-neutral-900/75" style={{ filter: "url(#noise0.8)" }} />
+        <div className="flex justify-center gap-4">
+          <SocialLink href="https://github.com/Ariel-Mutebi" label="Github" icon={githubLogo} />
+          <SocialLink href="mailto:pplanes311@gmail.com" label="Gmail" icon={gmailLogo} />
+        </div>
+        <p className="text-neutral-400 z-10 text-center">&copy; AR Mutebi LLC</p>
       </footer>
     </article>
   );
