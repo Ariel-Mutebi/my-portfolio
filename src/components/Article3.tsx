@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, type FC } from "react";
-import deadlift1 from "./images/deadlift1.mp4";
-import deadlift2 from "./images/deadlift2.mp4";
-import deadlift3 from "./images/deadlift3.mp4";
-import deadlift4 from "./images/deadlift4.mp4";
+import deadlift1 from "./images/deadlift1-compressed.mp4";
+import deadlift2 from "./images/deadlift2-compressed.mp4";
+import deadlift3 from "./images/deadlift3-compressed.mp4";
+import deadlift4 from "./images/deadlift4-compressed.mp4";
 
 interface DeadliftRecord {
   record: string;

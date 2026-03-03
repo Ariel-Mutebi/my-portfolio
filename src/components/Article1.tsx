@@ -5,7 +5,7 @@ import { TextReveal } from "./TextReveal.tsx";
 import { Flick } from "./Flick.tsx";
 
 import seatedPortrait from "./images/seated-portrait.jpg";
-import misty from "./images/misty.mp4";
+import misty from "./images/misty-compressed.mp4";
 import bossShoes from "./images/boss-shoes.jpg";
 import "./Article1.css";
 
@@ -102,16 +102,18 @@ export function Article1() {
         pin: true,
         onUpdate(self) {
           const { progress } = self;
-          if (progress < 0.5) setCurrentIndex(0);
-          else if (progress < 0.75) setCurrentIndex(1);
+          if (progress < 0.33) setCurrentIndex(0);
+          else if (progress < 0.66) setCurrentIndex(1);
           else setCurrentIndex(2);
         },
       },
     }).fromTo(
       [firstImageRef.current, firstWordRef.current],
       { opacity: 0, scale: 0.95 },
-      { opacity: 1, scale: 1, ease: "power2.out", duration: 0.25 }
-    );
+      { opacity: 1, scale: 1, ease: "power2.out", duration: 0.33 }
+    )
+      .to(firstImageRef.current, { opacity: 1, duration: 0.34 })
+      .to(firstImageRef.current, { opacity: 1, duration: 0.33 });
   });
 
   return (
