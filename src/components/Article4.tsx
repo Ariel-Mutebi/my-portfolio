@@ -1,5 +1,5 @@
 import blueMarbleTexture from "./images/blue-marble-texture.jpg";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Text } from "@react-three/drei";
 import { Group, Mesh, TextureLoader } from "three";
 import { useRef } from "react";
@@ -7,6 +7,8 @@ import { useRef } from "react";
 function Globe() {
   const texture = useLoader(TextureLoader, blueMarbleTexture);
   const globeRef = useRef<Mesh>(null);
+  const { viewport } = useThree();
+  const radius = Math.min(1, viewport.width * 0.3);
 
   useFrame(() => {
     if (!globeRef.current) return;
@@ -15,7 +17,7 @@ function Globe() {
 
   return (
     <mesh ref={globeRef}>
-      <sphereGeometry args={[1, 64, 64]} />
+      <sphereGeometry args={[radius, 64, 64]} />
       <meshPhongMaterial map={texture} shininess={40} />
     </mesh>
   );
@@ -29,8 +31,8 @@ const MESSAGE = "   STRIVING TO BE ONE OF THE BEST IN THE WORLD   ";
 
 function RingOfSaturn() {
   const groupRef = useRef<Group>(null);
-
-  const radius = 2.2;
+  const { viewport } = useThree();
+  const radius = Math.max(1.2, viewport.width * 0.4);
   const chars = MESSAGE.split("");
 
   useFrame((_, delta) => {
