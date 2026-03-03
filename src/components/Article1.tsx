@@ -8,9 +8,6 @@ import seatedPortrait from "./images/seated-portrait.jpg";
 import bossShoes from "./images/boss-shoes.jpg";
 import "./Article1.css";
 
-// for dev:
-// import misty from "/videos/misty.mp4";
-
 interface WordProps {
   firstWordRef?: RefObject<HTMLParagraphElement | null>;
   index: number;
@@ -67,7 +64,6 @@ const Background: FC<BackgroundProps> = ({ firstImageRef, index }) => {
       />
       <video
         ref={videoRef}
-        // src={misty}
         src="https://videos.armutebi.com/misty.mp4"
         className="h-full w-full object-cover absolute inset-0"
         style={{
